@@ -2,18 +2,16 @@ import streamlit as st
 import pandas as pd
 import os
 from run_pipeline import generate_ranked_leads
+from config import RANKED_LEADS_PATH
 
 st.set_page_config(layout="wide")
 st.title("Lead Generation Dashboard – MVP")
 
-OUTPUT_FILE = "output/ranked_leads.csv"
-
-# Auto-run pipeline ONCE if output doesn't exist
-if not os.path.exists(OUTPUT_FILE):
+if not os.path.exists(RANKED_LEADS_PATH):
     with st.spinner("Running lead generation pipeline..."):
         generate_ranked_leads()
 
-df = pd.read_csv(OUTPUT_FILE)
+df = pd.read_csv(RANKED_LEADS_PATH)
 
 search = st.text_input("Search leads")
 if search:
@@ -30,9 +28,3 @@ st.download_button(
     "ranked_leads.csv",
     "text/csv"
 )
-if st.button("Re-run pipeline"):
-    with st.spinner("Recomputing leads..."):
-        generate_ranked_leads()
-    st.success("Pipeline re-run successfully")
-
-
