@@ -1,19 +1,21 @@
 import streamlit as st
 import pandas as pd
 import os
+from run_pipeline import generate_ranked_leads
 
 st.set_page_config(layout="wide")
 st.title("Lead Generation Dashboard – MVP")
 
-FILE_PATH = "ranked_leads.csv"
+OUTPUT_FILE = "output/ranked_leads.csv"
 
-if not os.path.exists(FILE_PATH):
-    st.error("ranked_leads.csv not found. Please run run_pipeline.py first.")
-    st.stop()
+# Auto-run pipeline ONCE if output doesn't exist
+if not os.path.exists(OUTPUT_FILE):
+    with st.spinner("Running lead generation pipeline..."):
+        generate_ranked_leads()
 
-df = pd.read_csv(FILE_PATH)
+df = pd.read_csv(OUTPUT_FILE)
 
-search = st.text_input("Search")
+search = st.text_input("Search leads")
 if search:
     df = df[df.apply(
         lambda r: search.lower() in r.astype(str).str.lower().to_string(),
