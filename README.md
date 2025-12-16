@@ -34,18 +34,28 @@ This project demonstrates how a **structured data pipeline** can automate lead i
 
 startup-lead-mvp/
 │
+
 ├── data/
+
 │   ├── pubmed.csv
+
 │   ├── funding.csv
+
 │   ├── conferences.csv
+
 │
 ├── pipeline/
+
 │   ├── identify.py
+
 │   ├── enrich.py
+
 │   ├── score.py
 │
 ├── dashboard.py
+
 ├── requirements.txt
+
 └── run_pipeline.py
 
 
