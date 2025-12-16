@@ -30,3 +30,9 @@ st.download_button(
     "ranked_leads.csv",
     "text/csv"
 )
+if st.button("Re-run pipeline"):
+    with st.spinner("Recomputing leads..."):
+        generate_ranked_leads()
+    st.success("Pipeline re-run successfully")
+
+
