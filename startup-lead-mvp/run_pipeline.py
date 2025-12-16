@@ -29,5 +29,6 @@ def generate_ranked_leads():
     return output_path
 
 
+# Allows manual local run (but not auto on import)
 if __name__ == "__main__":
     generate_ranked_leads()
