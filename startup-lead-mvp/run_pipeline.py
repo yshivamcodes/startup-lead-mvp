@@ -1,13 +1,20 @@
+import os
 from pipeline.identify import identify_leads
 from pipeline.enrich import enrich_leads
 from pipeline.score import compute_score
-import os
+from config import (
+    PUBMED_PATH,
+    CONFERENCES_PATH,
+    FUNDING_PATH,
+    OUTPUT_DIR,
+    RANKED_LEADS_PATH,
+)
 
 def generate_ranked_leads():
-    os.makedirs("output", exist_ok=True)
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-    leads = identify_leads("data/pubmed.csv", "data/conferences.csv")
-    leads = enrich_leads(leads, "data/funding.csv")
+    leads = identify_leads(PUBMED_PATH, CONFERENCES_PATH)
+    leads = enrich_leads(leads, FUNDING_PATH)
 
     leads["probability"] = leads.apply(compute_score, axis=1)
     leads = leads.sort_values("probability", ascending=False)
@@ -23,12 +30,9 @@ def generate_ranked_leads():
         "paper_title",
     ]
 
-    output_path = "output/ranked_leads.csv"
-    leads[final_cols].to_csv(output_path, index=False)
-
-    return output_path
+    leads[final_cols].to_csv(RANKED_LEADS_PATH, index=False)
+    return RANKED_LEADS_PATH
 
 
-# Allows manual local run (but not auto on import)
 if __name__ == "__main__":
     generate_ranked_leads()
